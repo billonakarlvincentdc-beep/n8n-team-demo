@@ -1,0 +1,19 @@
+{
+  "name": "protocol-webhook-demo",
+  "version": "1.0.0",
+  "description": "Demo: protocol completion webhooks with mock data (remaining count, all done)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
+    "pg": "^8.11.3"
+  }
+}

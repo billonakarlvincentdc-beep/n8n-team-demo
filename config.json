@@ -1,0 +1,8 @@
+{
+  "port": 3099,
+  "webhook": {
+    "url": "",
+    "enabled": true,
+    "description": "Set webhook.url to your n8n webhook URL or use POST /api/webhook-config at runtime."
+  }
+}

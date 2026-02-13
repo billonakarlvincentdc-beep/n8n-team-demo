@@ -1,0 +1,191 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "all-done-check",
+              "leftValue": "={{ $json.body.allDone }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fabebcee-77fe-4c98-b777-dc72f365f11f",
+      "name": "All protocols done?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        336,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"message\": \"All protocols completed for this user!\", \"userId\": $json.userId, \"userName\": $json.userName, \"lastProtocolId\": $json.protocolId } }}",
+        "options": {}
+      },
+      "id": "53baa51e-882c-46b3-98a0-83672299ce0d",
+      "name": "Respond: All done",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"message\": \"Protocol completed.\", \"remainingCount\": $json.remainingCount, \"protocolId\": $json.protocolId, \"userName\": $json.userName } }}",
+        "options": {}
+      },
+      "id": "300aacb4-2a24-4ab4-9c80-408c2585224c",
+      "name": "Respond: More remaining",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        544,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "There are more remaining",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        752,
+        128
+      ],
+      "id": "552e3137-06dc-4e13-ad01-1120924dd6d8",
+      "name": "Discord",
+      "webhookId": "faa7a1b0-d55d-4e05-85ed-fc14e8ff72da",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "rVYwDGDhJiALBIp1",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "Its all done",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        752,
+        -96
+      ],
+      "id": "827fd6d8-b07e-46ab-9ebb-267f786d98da",
+      "name": "Discord1",
+      "webhookId": "faa7a1b0-d55d-4e05-85ed-fc14e8ff72da",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "rVYwDGDhJiALBIp1",
+          "name": "Discord Webhook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "protocol-demo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "15f6045e-4082-4bcd-a350-fe8c5ff8ddda",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        16,
+        0
+      ],
+      "webhookId": "protocol-demo"
+    }
+  ],
+  "connections": {
+    "All protocols done?": {
+      "main": [
+        [
+          {
+            "node": "Respond: All done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond: More remaining",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond: All done": {
+      "main": [
+        [
+          {
+            "node": "Discord1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond: More remaining": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord1": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "All protocols done?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3a5cb7e9c23e6fb5098d2cbc8ca1af3c6d2ba6535b9047efb8b51585dcca8337"
+  }
+}
